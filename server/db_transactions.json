@@ -23,6 +23,12 @@
       "type": "income",
       "amount": 1000,
       "id": 4
+    },
+    {
+      "name": "bought laptop",
+      "type": "expense",
+      "amount": 30000,
+      "id": 5
     }
   ]
 }
