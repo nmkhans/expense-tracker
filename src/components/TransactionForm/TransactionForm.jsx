@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCreateTransaction } from "../../redux/reducer/transactionsSlice/transactionSlice";
+import {
+  fetchCreateTransaction,
+  fetchUpdateTransaction,
+  editModeOff,
+} from "../../redux/reducer/transactionsSlice/transactionSlice";
 
 const TransactionForm = () => {
   const dispatch = useDispatch();
-  const { isLoading } = useSelector((state) => state.transactions);
+  const { isLoading, editData } = useSelector((state) => state.transactions);
 
   const [data, setData] = useState({
     name: "",
@@ -12,20 +16,59 @@ const TransactionForm = () => {
     amount: 0,
   });
 
-  const handleSubmit = (event) => {
+  useEffect(() => {
+    if (Object.keys(editData).length > 0) {
+      setData(editData);
+    }
+  }, [editData]);
+
+  const reset = () => {
+    setData({
+      name: "",
+      type: "income",
+      amount: 0,
+    });
+  };
+
+  const handleCreateSubmit = (event) => {
     event.preventDefault();
     const transactionData = {
       ...data,
-      amount: parseInt(data.amount)
-    }
+      amount: parseInt(data.amount),
+    };
     dispatch(fetchCreateTransaction(transactionData));
+    reset();
+  };
+
+  const handleUpdateSubmit = (event) => {
+    event.preventDefault();
+    const updatedData = {
+      name: data.name,
+      amount: data.amount,
+      type: data.type,
+    };
+
+    dispatch(fetchUpdateTransaction({ id: editData.id, data: updatedData }));
+
+    handleCancelEdit();
+  };
+
+  const handleCancelEdit = () => {
+    dispatch(editModeOff());
+    reset();
   };
 
   return (
     <div className="form">
       <h3>Add new transaction</h3>
 
-      <form onSubmit={handleSubmit}>
+      <form
+        onSubmit={
+          Object.keys(editData).length > 0
+            ? handleUpdateSubmit
+            : handleCreateSubmit
+        }
+      >
         <div className="form-group">
           <label htmlFor="transaction_name">Name</label>
           <input
@@ -82,11 +125,17 @@ const TransactionForm = () => {
         </div>
 
         <button disabled={isLoading} className="btn">
-          Add Transaction
+          {Object.keys(editData).length > 0
+            ? "Update Transaction"
+            : "Add Transaction"}
         </button>
       </form>
 
-      <button className="btn cancel_edit">Cancel Edit</button>
+      {Object.keys(editData).length > 0 && (
+        <button onClick={handleCancelEdit} className="btn cancel_edit">
+          Cancel Edit
+        </button>
+      )}
     </div>
   );
 };

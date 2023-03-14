@@ -1,25 +1,19 @@
 {
   "transactions": [
     {
-      "id": 1,
-      "name": "Salary from Google",
-      "type": "income",
-      "amount": 1000000
-    },
-    {
       "id": 2,
-      "name": "Family Expenses",
+      "name": "Family Expense",
       "type": "expense",
       "amount": 200000
     },
     {
-      "name": "freelance",
+      "name": "freelance ecommerce",
       "type": "income",
       "amount": "100",
       "id": 3
     },
     {
-      "name": "freelance",
+      "name": "freelance big project",
       "type": "income",
       "amount": 1000,
       "id": 4
@@ -29,6 +23,12 @@
       "type": "expense",
       "amount": 30000,
       "id": 5
+    },
+    {
+      "name": "Salary from Facebook",
+      "amount": 10000000,
+      "type": "income",
+      "id": 6
     }
   ]
 }

@@ -13,7 +13,7 @@ export const createTransaction = async (data) => {
 }
 
 export const updateTransaction = async (id, data) => {
-  const res = await axios.put(`/transactions/${id}`, data);
+  const res = await axios.patch(`/transactions/${id}`, data);
 
   return res.data;
 }
